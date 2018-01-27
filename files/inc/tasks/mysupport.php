@@ -20,17 +20,17 @@
 function task_mysupport($task)
 {
 	global $mybb, $db, $lang;
-	
+
 	$lang->load("mysupport");
-	
+
 	$task_log = $lang->task_mysupport_ran;
-	
+
 	// if this is empty or 0 it'll effect all threads
 	if($mybb->settings['mysupporttaskautosolvetime'] > 0)
 	{
 		$cut = TIME_NOW - intval($mybb->settings['mysupporttaskautosolvetime']);
 		$mysupport_forums = implode(",", array_map("intval", mysupport_forums()));
-		
+
 		// are there any MySupport forums??
 		if(!empty($mysupport_forums))
 		{
@@ -42,7 +42,7 @@ function task_mysupport($task)
 			{
 				$tids[] = $thread['tid'];
 			}
-			
+
 			$threads_solved = false;
 			// if there are any threads to mark as solved
 			if(!empty($tids))
@@ -51,13 +51,13 @@ function task_mysupport($task)
 				$threads_solved = true;
 			}
 		}
-		
+
 		if($threads_solved)
 		{
 			$task_log .= $lang->sprintf($lang->task_mysupport_autosolve_count, count($tids));
 		}
 	}
-	
+
 	if($mybb->settings['mysupporttaskbackup'] > 0)
 	{
 		$timecut = TIME_NOW - $mybb->settings['mysupporttaskbackup'];
@@ -71,23 +71,23 @@ function task_mysupport($task)
 				{
 					$config['admin_dir'] = "admin";
 				}
-				
+
 				define('MYBB_ADMIN_DIR', MYBB_ROOT.$config['admin_dir'] . "/");
 			}
-			
+
 			if(is_writable(MYBB_ADMIN_DIR . "backups"))
 			{
 				$name = substr(md5($mybb->user['uid'] . TIME_NOW), 0, 10) . random_str(54);
 				$file = MYBB_ADMIN_DIR . "backups/mysupport_backup_" . $name . ".sql";
-				
+
 				$f = @fopen($file, "w");
 				@fwrite($f, "<?php\n");
 				@fwrite($f, "/**\n * Backup of MySupport data\n * Generated: " . date("dS F Y \a\\t H:i", TIME_NOW) . "\n * Only to be imported via the MySupport backup importer.\n**/\n\n");
-				
+
 				require_once MYBB_ROOT . "inc/plugins/mysupport/mysupport.php";
-				
+
 				$mysupport_columns = mysupport_table_columns(2);
-				
+
 				foreach($mysupport_columns as $table => $columns)
 				{
 					switch($table)
@@ -105,7 +105,7 @@ function task_mysupport($task)
 							$id_field = "gid";
 							break;
 					}
-					
+
 					$columns = implode(", ", array_map($db->escape_string, array_keys($columns)));
 					$query = $db->simple_select($table, $id_field . "," . $columns);
 					$columns = explode(", ", $columns);
@@ -137,17 +137,17 @@ function task_mysupport($task)
 					$q = "\$queries[] = \"INSERT INTO " . TABLE_PREFIX . "mysupport (" . implode(",", $keys) . ") VALUES (" . implode(",", $vals) . ")\";\n";
 					@fwrite($f, $q);
 				}
-				
+
 				@fwrite($f, "?>");
 				@fclose($f);
-				
+
 				$insert = array(
 					"type" => "backup",
 					"name" => $db->escape_string($name),
 					"extra" => TIME_NOW
 				);
 				$db->insert_query("mysupport", $insert);
-				
+
 				// get the latest 3 backups
 				$query = $db->simple_select("mysupport", "mid", "type = 'backup'", array("order_by" => "extra", "order_dir" => "DESC", "limit" => 3));
 				$backups = array(0);
@@ -156,7 +156,7 @@ function task_mysupport($task)
 					$backups[] = $backup;
 				}
 				$backups = implode(",", array_map("intval", $backups));
-				
+
 				// select all the backups that aren't the last 3
 				$query = $db->simple_select("mysupport", "mid, name", "type = 'backup' AND mid NOT IN (" . $db->escape_string($backups) . ")");
 				while($backup = $db->fetch_array($query))
@@ -167,17 +167,17 @@ function task_mysupport($task)
 					}
 					$db->delete_query("mysupport", "mid = '" . intval($backup['mid']) . "'");
 				}
-				
+
 				$task_log .= " " . $lang->task_mysupport_backup_ran;
 			}
 		}
 	}
-	
+
 	if(!empty($task_log))
 	{
 		add_task_log($task, $task_log);
 	}
-	
+
 	/*
 	SELECT `t`.`tid`, `t`.`subject`, `t`.`fid`, `f`.`name`, `t`.`status`, `t`.`statusuid`, `u1`.`username` AS `statusuid_username`, `t`.`statustime`, `t`.`bestanswer`, `t`.`assign`, `u2`.`username` AS `assign_username`, `t`.`assignuid`, `u3`.`username` AS `assignuid_username`, `t`.`priority`, `m`.`name` AS `priority_name`, `t`.`prefix`, `tp`.`prefix` AS `prefix_name`
 	FROM `mybb_threads` `t`

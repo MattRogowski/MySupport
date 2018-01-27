@@ -32,7 +32,7 @@ function mysupport_do_info()
 		'author' => 'MattRogowski',
 		'authorsite' => 'http://mattrogowski.co.uk/mybb/',
 		'version' => MYSUPPORT_VERSION,
-		'compatibility' => '16*',
+		'compatibility' => '18*',
 		'guid' => '3ebe16a9a1edc67ac882782d41742330'
 	);
 }
@@ -40,13 +40,13 @@ function mysupport_do_info()
 function mysupport_do_install()
 {
 	global $db, $cache, $mysupport_uninstall_confirm_override;
-	
+
 	// this is so we override the confirmation when trying to uninstall, so we can just run the uninstall code
 	$mysupport_uninstall_confirm_override = true;
 	mysupport_do_uninstall();
-	
+
 	mysupport_table_columns(1);
-	
+
 	if(!$db->table_exists("mysupport"))
 	{
 		$db->write_query("
@@ -59,7 +59,7 @@ function mysupport_do_install()
 			) ENGINE = MYISAM ;
 		");
 	}
-	
+
 	$settings_group = array(
 		"name" => "mysupport",
 		"title" => "MySupport Settings",
@@ -68,13 +68,13 @@ function mysupport_do_install()
 		"isdefault" => "no"
 	);
 	$db->insert_query("settinggroups", $settings_group);
-	
+
 	mysupport_import_settings();
-	
+
 	mysupport_do_templates(1);
-	
+
 	mysupport_stylesheet(1);
-	
+
 	// insert some default priorities
 	$priorities = array();
 	$priorities[] = array(
@@ -105,9 +105,9 @@ function mysupport_do_install()
 	{
 		$db->insert_query("mysupport", $priority);
 	}
-	
+
 	mysupport_insert_task();
-	
+
 	// set some values for the staff groups
 	$update = array(
 		"canmarksolved" => 1,
@@ -120,9 +120,9 @@ function mysupport_do_install()
 		"canmanagesupportdenial" => 1
 	);
 	$db->update_query("usergroups", $update, "gid IN ('3','4','6')");
-	
+
 	change_admin_permission("config", "mysupport", 1);
-	
+
 	$cache->update_forums();
 	$cache->update_usergroups();
 	mysupport_cache();
@@ -131,14 +131,14 @@ function mysupport_do_install()
 function mysupport_do_is_installed()
 {
 	global $db;
-	
+
 	return $db->table_exists("mysupport");
 }
 
 function mysupport_do_uninstall()
 {
 	global $mybb, $db, $cache, $mysupport_uninstall_confirm_override;
-	
+
 	// this is a check to make sure we want to uninstall
 	// if 'No' was chosen on the confirmation screen, redirect back to the plugins page
 	if($mybb->input['no'])
@@ -152,24 +152,24 @@ function mysupport_do_uninstall()
 		if($mybb->request_method == "post" || $mysupport_uninstall_confirm_override === true || $mybb->input['action'] == "delete")
 		{
 			mysupport_table_columns(-1);
-			
+
 			if($db->table_exists("mysupport"))
 			{
 				$db->drop_table("mysupport");
 			}
-			
+
 			$db->delete_query("settinggroups", "name = 'mysupport'");
 			$settings = mysupport_setting_names();
 			$settings = "'" . implode("','", array_map($db->escape_string, $settings)) . "'";
 			// have to use $db->escape_string above instead of around $settings directly because otherwise it escapes the ' around the names, which are important
 			$db->delete_query("settings", "name IN ({$settings})");
-			
+
 			rebuild_settings();
-			
+
 			mysupport_do_templates(0, false);
-			
+
 			mysupport_stylesheet(-1);
-			
+
 			$cache->update_forums();
 			$cache->update_usergroups();
 			$db->delete_query("datacache", "title = 'mysupport'");
@@ -178,9 +178,9 @@ function mysupport_do_uninstall()
 		else
 		{
 			global $lang, $page;
-			
+
 			$lang->load("config_mysupport");
-			
+
 			$page->output_confirm_action("index.php?module=config-plugins&action=deactivate&uninstall=1&plugin=mysupport&my_post_key={$mybb->post_code}", $lang->mysupport_uninstall_warning);
 		}
 	}
@@ -189,18 +189,18 @@ function mysupport_do_uninstall()
 function mysupport_do_activate()
 {
 	mysupport_template_edits(0);
-	
+
 	mysupport_template_edits(1);
-	
+
 	mysupport_upgrade();
 }
 
 function mysupport_do_deactivate()
 {
 	global $cache;
-	
+
 	mysupport_template_edits(0);
-	
+
 	mysupport_cache("version");
 }
 
@@ -211,7 +211,7 @@ function mysupport_do_deactivate()
 function mysupport_upgrade()
 {
 	global $mybb, $db, $cache;
-	
+
 	$mysupport_cache = $cache->read("mysupport");
 	$old_version = $mysupport_cache['version'];
 	// legacy
@@ -219,26 +219,26 @@ function mysupport_upgrade()
 	{
 		$old_version = $cache->read("mysupport_version");
 	}
-	
+
 	// only need to run through this if the version has actually changed
 	if(!empty($old_version) && $old_version < MYSUPPORT_VERSION)
 	{
 		// reimport the settings to add any new ones and refresh the current ones
 		mysupport_import_settings();
-		
+
 		// remove the current templates, but only the master versions
 		mysupport_do_templates(0, true);
 		// re-import the master templates
 		mysupport_do_templates(1);
-		
+
 		// add any new table columns that don't already exist
 		mysupport_table_columns(1);
-		
+
 		mysupport_stylesheet(2);
-		
+
 		$deleted_settings = array();
 		$deleted_templates = array();
-		
+
 		// go through each upgrade process; versions are only listed here if there were changes FROM that version to the next
 		// it will go through the ones it needs to and make the changes it needs
 		if($old_version <= 0.3)
@@ -277,15 +277,15 @@ function mysupport_upgrade()
 			$db->update_query("settings", $update, "name = 'mysupportmodlog'");
 			rebuild_settings();
 		}
-		
+
 		if(!empty($deleted_settings))
 		{
 			$deleted_settings = "'" . implode("','", array_map($db->escape_string, $deleted_settings)) . "'";
 			// have to use $db->escape_string above instead of around $deleted_settings directly because otherwise it escapes the ' around the names, which are important
 			$db->delete_query("settings", "name IN ({$deleted_settings})");
-			
+
 			mysupport_update_setting_orders();
-			
+
 			rebuild_settings();
 		}
 		if(!empty($deleted_templates))
@@ -294,19 +294,19 @@ function mysupport_upgrade()
 			// have to use $db->escape_string above instead of around $deleted_templates directly because otherwise it escapes the ' around the names, which are important
 			$db->delete_query("templates", "title IN ({$deleted_templates})");
 		}
-		
+
 		// now we can update the cache with the new version
 		mysupport_cache("version");
 		// rebuild the forums and usergroups caches in case anything's changed
 		$cache->update_forums();
 		$cache->update_usergroups();
 	}
-} 
+}
 
 function mysupport_table_columns($action = 0)
 {
 	global $db;
-	
+
 	$mysupport_columns = array(
 		"forums" => array(
 			"mysupport" => array(
@@ -397,12 +397,12 @@ function mysupport_table_columns($action = 0)
 			)
 		)
 	);
-	
+
 	if($action == 2)
 	{
 		return $mysupport_columns;
 	}
-	
+
 	foreach($mysupport_columns as $table => $columns)
 	{
 		$last = "";
@@ -449,7 +449,7 @@ function mysupport_insert_task()
 	global $db, $lang;
 	
 	$lang->load("mysupport");
-	
+
 	include_once MYBB_ROOT . "inc/functions_task.php";
 	$new_task = array(
 		"title" => $lang->mysupport,
@@ -471,12 +471,12 @@ function mysupport_setting_names()
 {
 	$settings = mysupport_settings_info();
 	$setting_names = array();
-	
+
 	foreach($settings as $setting)
 	{
 		$setting_names[] = $setting['name'];
 	}
-	
+
 	return $setting_names;
 }
 
@@ -751,7 +751,7 @@ none=None (Disabled)",
 		"optionscode" => "text",
 		"value" => ""
 	);
-	
+
 	return $settings;
 }
 
@@ -761,10 +761,10 @@ none=None (Disabled)",
 function mysupport_import_settings()
 {
 	global $mybb, $db;
-	
+
 	$settings = mysupport_settings_info();
 	$settings_gid = mysupport_settings_gid();
-	
+
 	foreach($settings as $setting)
 	{
 		// we're updating an existing setting - this would be called during an upgrade
@@ -792,9 +792,9 @@ function mysupport_import_settings()
 			$db->insert_query("settings", $insert);
 		}
 	}
-	
+
 	mysupport_update_setting_orders();
-	
+
 	rebuild_settings();
 }
 
@@ -804,9 +804,9 @@ function mysupport_import_settings()
 function mysupport_update_setting_orders()
 {
 	global $db;
-	
+
 	$settings = mysupport_setting_names();
-	
+
 	$i = 1;
 	foreach($settings as $setting)
 	{
@@ -816,7 +816,7 @@ function mysupport_update_setting_orders()
 		$db->update_query("settings", $update, "name = '" . $db->escape_string($setting) . "'");
 		$i++;
 	}
-	
+
 	rebuild_settings();
 }
 
@@ -832,9 +832,9 @@ function mysupport_update_setting_orders()
 function mysupport_do_templates($type, $master_only = false)
 {
 	global $db;
-	
+
 	require_once MYBB_ROOT . 'inc/adminfunctions_templates.php';
-	
+
 	if($type == 1)
 	{
 		$template_group = array(
@@ -842,7 +842,7 @@ function mysupport_do_templates($type, $master_only = false)
 			"title" => "<lang:mysupport>"
 		);
 		$db->insert_query("templategroups", $template_group);
-		
+
 		$templates = array();
 		$templates[] = array(
 			"title" => "mysupport_form",
@@ -1154,7 +1154,7 @@ function mysupport_do_templates($type, $master_only = false)
 	{\$denied_text}
 </table>"
 		);
-		
+
 		foreach($templates as $template)
 		{
 			$insert = array(
@@ -1165,20 +1165,20 @@ function mysupport_do_templates($type, $master_only = false)
 				"status" => "",
 				"dateline" => TIME_NOW
 			);
-			
+
 			$db->insert_query("templates", $insert);
 		}
 	}
 	else
 	{
 		$db->delete_query("templategroups", "prefix = 'mysupport'");
-		
+
 		$where_sql = "";
 		if($master_only)
 		{
 			$where_sql = " AND sid = '-2'";
 		}
-		
+
 		$templates = mysupport_templates();
 		$templates = "'" . implode("','", array_map($db->escape_string, $templates)) . "'";
 		// have to use $db->escape_string above instead of around $templates directly because otherwise it escapes the ' around the names, which are important
@@ -1194,7 +1194,7 @@ function mysupport_do_templates($type, $master_only = false)
 function mysupport_template_edits($type)
 {
 	require_once MYBB_ROOT . 'inc/adminfunctions_templates.php';
-	
+
 	if($type == 1)
 	{
 		find_replace_templatesets("showthread", "#".preg_quote('{$multipage}')."#i", '{$multipage}{$mysupport_options}');
@@ -1263,7 +1263,7 @@ function mysupport_template_edits($type)
 function mysupport_stylesheet($action = 0)
 {
 	global $db;
-	
+
 	$stylesheet = ".mysupport_status_solved {
 	color: green;
 }
@@ -1403,7 +1403,7 @@ function mysupport_stylesheet($action = 0)
 .modcp_nav_deny_support {
 	background: url(images/mysupport_no_support.gif) no-repeat left center;
 }";
-	
+
 	if($action == 1)
 	{
 		$insert = array(
@@ -1414,7 +1414,7 @@ function mysupport_stylesheet($action = 0)
 			"lastmodified" => TIME_NOW
 		);
 		$sid = $db->insert_query("themestylesheets", $insert);
-		
+
 		$update = array(
 			"cachefile" => "css.php?stylesheet=" . intval($sid)
 		);
@@ -1424,7 +1424,7 @@ function mysupport_stylesheet($action = 0)
 	{
 		$query = $db->simple_select("themestylesheets", "sid", "name = 'mysupport.css' AND tid = '1'");
 		$sid = $db->fetch_field($query, "sid");
-		
+
 		$update = array(
 			"stylesheet" => $stylesheet,
 			"lastmodified" => TIME_NOW
@@ -1435,7 +1435,7 @@ function mysupport_stylesheet($action = 0)
 	{
 		$db->delete_query("themestylesheets", "name = 'mysupport.css'");
 	}
-	
+
 	if($action == 1 || $action == -1)
 	{
 		$query = $db->simple_select("themes", "tid");

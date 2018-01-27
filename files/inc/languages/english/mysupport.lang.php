@@ -1,7 +1,7 @@
 <?php
 /**
  * MySupport 0.4 - Language File
- * © MattRogowski 2010
+ * ï¿½ MattRogowski 2010
  * http://mattrogowski.co.uk
  * You may edit for your own personal forum but must not redistribute it in any form without my permission.
 **/

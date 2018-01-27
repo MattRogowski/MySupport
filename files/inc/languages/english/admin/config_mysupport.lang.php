@@ -1,7 +1,7 @@
 <?php
 /**
  * MySupport 0.4 - Admin Language File
- * © MattRogowski 2010
+ * ï¿½ MattRogowski 2010
  * http://mattrogowski.co.uk
  * You may edit for your own personal forum but must not redistribute it in any form without my permission.
 **/
@@ -98,7 +98,7 @@ $l['priority_no_name'] = "Please enter a name for this priority.";
 $l['priorities_thread_list_none'] = "There are no threads with a priority of <em>'{1}'</em>.";
 $l['priority_style'] = "Style";
 $l['priority_style_description'] = "Enter the HEX code of the colour to highlight threads with this priority. This colour will be used to highlight threads on the forum display pages. If a thread has been unapproved, this colour will not override the unapproved colour.";
-$l['success_support_denial'] = "Support denial settings updated."; 
+$l['success_support_denial'] = "Support denial settings updated.";
 $l['support_denial_reason_added'] = "Reason successfully added.";
 $l['support_denial_reason_deleted'] = "Reason successfully deleted.";
 $l['support_denial_reason_edited'] = "Reason successfully edited.";
