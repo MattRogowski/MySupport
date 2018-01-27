@@ -87,7 +87,7 @@ $l['mysupport_wol_technical'] = "Viewing Technical Threads";
 $l['mysupport_wol_support_denial'] = "Managing Support Denial";
 $l['mysupport_wol_support_denial_deny'] = "Denying Support";
 
-$l['onhold_form'] = "On hold??";
+$l['onhold_form'] = "On hold?";
 $l['hold_on'] = "Put thread On Hold";
 $l['hold_off'] = "Take thread Off Hold";
 $l['hold_status'] = "Hold status:";
@@ -158,7 +158,7 @@ $l['category_remove_success'] = "Category of {1} removed.";
 $l['category_remove_success_multi'] = "Category removed from {1} thread(s).";
 $l['category_invalid'] = "You have selected an invalid category.";
 
-$l['issupportthread'] = "Is support thread??";
+$l['issupportthread'] = "Is support thread?";
 $l['issupportthread_1'] = "Thread marked as a support thread.";
 $l['issupportthread_1_multi'] = "Threads marked as support threads.";
 $l['issupportthread_0'] = "Thread marked as not a support thread.";
@@ -198,7 +198,7 @@ $l['denied_support_profile'] = "This user has been denied support on these forum
 $l['mysupport_solved_bump_message'] = "This thread has been marked as solved. If you have a similar issue, it would be better to post your own thread rather than bump this one, to help keep everybody's different issues separate.";
 
 $l['mysupport_options'] = "MySupport Options";
-$l['mysupport_show_as_text'] = "Show thread statuses as text??";
+$l['mysupport_show_as_text'] = "Show thread statuses as text?";
 
 $l['error_no_action'] = "Your action will not make any changes to the thread. Please select a new status, user to assign the thread to, priority or category, put the thread on hold, or mark it as a support thread/not a support thread.";
 

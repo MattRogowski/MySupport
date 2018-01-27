@@ -15,7 +15,7 @@ $l['forum'] = "Forum";
 $l['started_by'] = "Started by";
 $l['status'] = "Status";
 
-$l['mysupport_uninstall_warning'] = "Are you sure you want to uninstall MySupport?? You will permanently lose all thread statuses.";
+$l['mysupport_uninstall_warning'] = "Are you sure you want to uninstall MySupport? You will permanently lose all thread statuses.";
 
 $l['home'] = "Home";
 $l['home_header'] = "General Information";
@@ -58,20 +58,20 @@ $l['mysupport_name'] = "Name";
 $l['mysupport_description'] = "Description";
 $l['mysupport_view_threads'] = "View Threads";
 
-$l['mysupport_forums'] = "Where to enable MySupport??";
-$l['mysupport_move_forum'] = "Where to move threads when solved??";
+$l['mysupport_forums'] = "Where to enable MySupport?";
+$l['mysupport_move_forum'] = "Where to move threads when solved?";
 $l['mysupport_move_forum_desc'] = "<strong>Note:</strong> if a thread is moved when it is marked as solved, 'unsolving' the thread will <strong>not</strong> move the thread back to it's original forum.";
-$l['mysupport_canmarksolved'] = "Who can mark threads as solved??";
-$l['mysupport_canmarktechnical'] = "Who can mark threads as technical??";
-$l['mysupport_canseetechnotice'] = "Who can see the technical threads notice??";
-$l['mysupport_canassign'] = "Who can assign threads??";
-$l['mysupport_canbeassigned'] = "Who can be assigned threads??";
-$l['mysupport_cansetpriorities'] = "Who can set priorities??";
-$l['mysupport_canseepriorities'] = "Who can see priorities??";
-$l['mysupport_cansetcategories'] = "Who can set categories??";
-$l['mysupport_canmanagesupportdenial'] = "Who can manage support denial??";
-$l['mysupport_what_to_log'] = "What actions to log??";
-$l['mysupport_what_to_log_desc'] = "What MySupport actions should have a moderator entry created?? This is an alias of the 'Add moderator log entry' setting in the normal MySupport settings; updating here will update that setting and vice versa.";
+$l['mysupport_canmarksolved'] = "Who can mark threads as solved?";
+$l['mysupport_canmarktechnical'] = "Who can mark threads as technical?";
+$l['mysupport_canseetechnotice'] = "Who can see the technical threads notice?";
+$l['mysupport_canassign'] = "Who can assign threads?";
+$l['mysupport_canbeassigned'] = "Who can be assigned threads?";
+$l['mysupport_cansetpriorities'] = "Who can set priorities?";
+$l['mysupport_canseepriorities'] = "Who can see priorities?";
+$l['mysupport_cansetcategories'] = "Who can set categories?";
+$l['mysupport_canmanagesupportdenial'] = "Who can manage support denial?";
+$l['mysupport_what_to_log'] = "What actions to log?";
+$l['mysupport_what_to_log_desc'] = "What MySupport actions should have a moderator entry created? This is an alias of the 'Add moderator log entry' setting in the normal MySupport settings; updating here will update that setting and vice versa.";
 
 $l['can_manage_mysupport'] = "Can manage MySupport";
 
@@ -90,7 +90,7 @@ $l['success_assign'] = "Assigning threads settings updated.";
 $l['success_priorities'] = "Priority settings updated.";
 $l['priority_added'] = "Priority successfully added.";
 $l['priority_deleted'] = "Priority successfully deleted.";
-$l['priority_delete_confirm'] = "Are you sure you want to delete this priority??";
+$l['priority_delete_confirm'] = "Are you sure you want to delete this priority?";
 $l['priority_delete_confirm_count'] = "It is currently being used by {1} threads.";
 $l['priority_edited'] = "Priority successfully edited.";
 $l['priority_invalid'] = "Invalid priority.";
@@ -105,7 +105,7 @@ $l['support_denial_reason_edited'] = "Reason successfully edited.";
 $l['support_denial_reason_no_name'] = "Please enter a name for this reason.";
 $l['support_denial_reason_no_description'] = "Please enter a description for this reason.";
 $l['support_denial_reason_invalid'] = "Invalid reason.";
-$l['support_denial_reason_delete_confirm'] = "Are you sure you want to delete this reason??";
+$l['support_denial_reason_delete_confirm'] = "Are you sure you want to delete this reason?";
 $l['support_denial_reason_delete_confirm_count'] = "It has been given as a reason to {1} user(s). Deleting this reason will simply not show any reason to this user, it won't allow them to receive support again.";
 $l['support_denial_reason_description_description'] = "This is what will be displayed to a user when they are denied support.";
 

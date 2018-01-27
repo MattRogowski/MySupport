@@ -31,7 +31,7 @@ function task_mysupport($task)
 		$cut = TIME_NOW - intval($mybb->settings['mysupporttaskautosolvetime']);
 		$mysupport_forums = implode(",", array_map("intval", mysupport_forums()));
 
-		// are there any MySupport forums??
+		// are there any MySupport forums?
 		if(!empty($mysupport_forums))
 		{
 			// select all the unsolved threads in MySupport forums where the last post was before the cut-off time, and either the status time is before the cut-off time, or the status of the thread has never been changed
