@@ -2890,18 +2890,18 @@ function mysupport_settings_footer()
 		if($mybb->input["gid"] == $gid || !$mybb->input['gid'])
 		{
 			echo '<script type="text/javascript">
-	Event.observe(window, "load", function() {
+	jQuery(document).ready(function() {
 	loadMySupportPeekers();
 });
 function loadMySupportPeekers()
 {
-	new Peeker($$(".setting_enablemysupporttechnical"), $("row_setting_mysupporthidetechnical"), /1/, true);
-	new Peeker($$(".setting_enablemysupporttechnical"), $("row_setting_mysupporttechnicalnotice"), /1/, true);
-	new Peeker($$(".setting_enablemysupportassign"), $("row_setting_mysupportassignpm"), /1/, true);
-	new Peeker($$(".setting_enablemysupportassign"), $("row_setting_mysupportassignsubscribe"), /1/, true);
-	new Peeker($("setting_mysupportpointssystem"), $("row_setting_mysupportpointssystemname"), /other/, false);
-	new Peeker($("setting_mysupportpointssystem"), $("row_setting_mysupportpointssystemcolumn"), /other/, false);
-	new Peeker($("setting_mysupportpointssystem"), $("row_setting_mysupportbestanswerpoints"), /[^none]/, false);
+	new Peeker($(".setting_enablemysupporttechnical"), $("#row_setting_mysupporthidetechnical"), 1, true);
+	new Peeker($(".setting_enablemysupporttechnical"), $("#row_setting_mysupporttechnicalnotice"), 1, true);
+	new Peeker($(".setting_enablemysupportassign"), $("#row_setting_mysupportassignpm"), 1, true);
+	new Peeker($(".setting_enablemysupportassign"), $("#row_setting_mysupportassignsubscribe"), 1, true);
+	new Peeker($("#setting_mysupportpointssystem"), $("#row_setting_mysupportpointssystemname"), /other/, false);
+	new Peeker($("#setting_mysupportpointssystem"), $("#row_setting_mysupportpointssystemcolumn"), /other/, false);
+	new Peeker($("#setting_mysupportpointssystem"), $("#row_setting_mysupportbestanswerpoints"), /[^none]/, false);
 }
 </script>';
 		}
