@@ -225,7 +225,7 @@ function mysupport_settings_redirect()
 
 	if($installed === true && $mybb->input['plugin'] == "mysupport")
 	{
-		$lang->load("mysupport");
+		$lang->load("mysupport", true);
 
 		$gid = mysupport_settings_gid();
 
